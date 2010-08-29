@@ -5,11 +5,13 @@
 Summary:	A lightweight display manager
 Name:		lightdm
 Version:	0.1.1
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPLv3
 Group:		System/X11
 Url:		https://launchpad.net/lightdm
 Source0:	http://people.ubuntu.com/~robert-ancell/lightdm/releases/%{name}-%{version}.tar.gz
+Source1:	%{name}.pam
+Source2:	35%{name}.conf
 Patch0:		lightdm-0.1.1-fix-undefined-reference.patch
 BuildRequires:	perl(XML::Parser)
 BuildRequires:	consolekit-devel
@@ -65,6 +67,13 @@ Development files and headers for %{name}.
 %install
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
 %makeinstall_std
+
+mkdir -p %{buildroot}%{_sysconfdir}/pam.d
+install -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/pam.d/%{name}
+
+mkdir -p %{buildroot}%{_datadir}/X11/dm.d
+install -m 644 %{SOURCE2} %{buildroot}%{_datadir}/X11/dm.d/35%{name}.conf
+
 #(tpg) wtf is this
 rm -rf %{buildroot}/%{libdir}/girepository-1.0/LightDMGreeter-1.typelib
 
@@ -81,15 +90,17 @@ rm -rf %{buildroot}%{_libdir}/lib*.*a
 %doc ChangeLog NEWS
 %dir %{_datadir}/%{name}
 %dir %{_datadir}/%{name}/themes
+%config(noreplace) %{_sysconfdir}/%{name}.conf
+%config(noreplace) %{_sysconfdir}/pam.d/%{name}
+%config(noreplace) %{_datadir}/X11/dm.d/35%{name}.conf
 %{_sysconfdir}/dbus-1/system.d/org.freedesktop.LightDisplayManager.conf
-%{_sysconfdir}/%{name}.conf
 %{_bindir}/%{name}
 %{_libdir}/ldm-gtk-greeter
 %{_libdir}/ldm-webkit-greeter
 #%{_datadir}/gir-1.0/LightDMGreeter-1.gir
 %{_datadir}/%{name}/themes/gnome*
 %{_datadir}/%{name}/themes/webkit*
-%{_mandir}/man1/lightdm.1.lzma
+%{_mandir}/man1/lightdm.1.*
 
 %files -n %{libname}
 %defattr(-,root,root)
@@ -104,4 +115,3 @@ rm -rf %{buildroot}%{_libdir}/lib*.*a
 %{_includedir}/%{name}-1.0/%{name}/*.h
 %{_datadir}/gtk-doc/html/ldmgreeter/*
 %{_libdir}/pkgconfig/libldmgreeter-1.pc
-
