@@ -59,6 +59,8 @@ Development files and headers for %{name}.
 %configure2_5x \
 	--enable-console-kit=yes \
 	--without-default-session \
+	--enable-introspection=yes \
+	--with-xsession-dir="%{_sysconfdir}/X11/wmsession.d" \
 	--disable-gtk-doc \
 	--disable-static
 
@@ -75,7 +77,8 @@ mkdir -p %{buildroot}%{_datadir}/X11/dm.d
 install -m 644 %{SOURCE2} %{buildroot}%{_datadir}/X11/dm.d/35%{name}.conf
 
 #(tpg) wtf is this
-rm -rf %{buildroot}/%{libdir}/girepository-1.0/LightDMGreeter-1.typelib
+rm -rf %{buildroot}%{_libdir}/girepository-1.0/LightDMGreeter-1.typelib
+rm -rf %{buildroot}%{_datadir}/gir-1.0/LightDMGreeter-1.gir
 
 #(tpg) get rid of these
 rm -rf %{buildroot}%{_libdir}/lib*.*a
