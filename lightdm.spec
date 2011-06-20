@@ -5,7 +5,7 @@
 Summary:	A lightweight display manager
 Name:		lightdm
 Version:	0.1.1
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPLv3
 Group:		System/X11
 Url:		https://launchpad.net/lightdm
