@@ -24,6 +24,7 @@ BuildRequires:	gtk2-devel
 BuildRequires:	webkitgtk-devel
 BuildRequires:	gnome-doc-utils
 BuildRequires:	intltool
+BuildRequires:	gobject-introspection-devel
 Requires:	%{libname} = %{version}-%{release}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
