@@ -10,7 +10,7 @@
 %define	develqt 		%mklibname %{name}-qt -d
 
 Name:		lightdm
-Version:	1.1.4
+Version:	1.1.9
 Release:	1
 Summary:	A lightweight display manager
 Group:		System/X11
@@ -90,6 +90,7 @@ The QT development files and headers for %{name}.
 
 %build
 NOCONFIGURE=yes gnome-autogen.sh
+
 %configure2_5x \
 	--disable-static \
 	--with-greeter-user=%{dm_user} \
@@ -102,7 +103,9 @@ rm -rf %{buildroot}
 %makeinstall_std
 
 # make lightdm user home
-mkdir -p %{buildroot}%{_varrun}/%{name}
+mkdir -p %{buildroot}%{_var}/lib/%{name}
+
+install -D -m0755 utils/gdmflexiserver %{buildroot}%{_libexecdir}/%{name}/gdmflexiserver
 
 # remove apparmor stuff
 rm -f %{buildroot}%{_sysconfdir}/apparmor.d/lightdm-guest-session
@@ -115,10 +118,10 @@ install -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/pam.d/%{name}
 mkdir -p %{buildroot}%{_datadir}/X11/dm.d
 install -m 644 %{SOURCE2} %{buildroot}%{_datadir}/X11/dm.d/35%{name}.conf
 
-%find_lang %{name}
+%find_lang %{name} %{name}.lang
 
 %pre
-%_pre_useradd %{dm_user} %{_varrun}/%{name} /bin/false
+%_pre_useradd %{dm_user} %{_var}/lib/%{name} /bin/false
 %_pre_groupadd xgrp %{dm_user}
 
 %postun
@@ -138,7 +141,7 @@ install -m 644 %{SOURCE2} %{buildroot}%{_datadir}/X11/dm.d/35%{name}.conf
 %{_sbindir}/%{name}
 %{_libexecdir}/lightdm/*
 %{_mandir}/man1/%{name}.1*
-%attr(770, %{dm_user}, %{dm_user}) %dir %{_varrun}/%{name}
+%attr(770, %{dm_user}, %{dm_user}) %dir %{_var}/lib/%{name}
 
 %files -n %{libgobject}
 %{_libdir}/liblightdm-gobject-%{api}.so.%{major}*
@@ -159,4 +162,3 @@ install -m 644 %{SOURCE2} %{buildroot}%{_datadir}/X11/dm.d/35%{name}.conf
 %{_includedir}/lightdm-qt-%{qt_api}
 %{_libdir}/liblightdm-qt-%{qt_api}.so
 %{_libdir}/pkgconfig/liblightdm-qt-%{qt_api}.pc
-
