@@ -19,31 +19,35 @@ URL:		https://launchpad.net/lightdm
 Source0:	https://launchpad.net/lightdm/+download/%{name}-%{version}.tar.gz
 Source1:	%{name}.pam
 Source2:	35%{name}.conf
-
-BuildRequires: gnome-common
-BuildRequires: gtk-doc
-BuildRequires: intltool >= 0.35.0
-BuildRequires: vala-tools
-BuildRequires: gettext-devel
-BuildRequires: pam-devel
-BuildRequires: pkgconfig(dbus-glib-1)
-BuildRequires: pkgconfig(gio-2.0) >= 2.26
-BuildRequires: pkgconfig(gio-unix-2.0)
-BuildRequires: pkgconfig(glib-2.0)
-BuildRequires: pkgconfig(gmodule-export-2.0)
-BuildRequires: pkgconfig(gobject-2.0)
-BuildRequires: pkgconfig(gobject-introspection-1.0) >= 0.9.5
-BuildRequires: pkgconfig(libxklavier)
-BuildRequires: pkgconfig(QtCore)
-BuildRequires: pkgconfig(QtDBus)
-BuildRequires: pkgconfig(QtGui)
-BuildRequires: pkgconfig(QtNetwork)
-BuildRequires: pkgconfig(x11)
-BuildRequires: pkgconfig(xcb)
-BuildRequires: pkgconfig(xdmcp)
-
-Suggests: lightdm-greeter
-Requires(pre,postun): rpm-helper
+Patch0:		lightdm-1.1.9-mdv-config.patch
+BuildRequires:	gnome-common
+BuildRequires:	gtk-doc
+BuildRequires:	intltool >= 0.35.0
+BuildRequires:	vala-tools
+BuildRequires:	gettext-devel
+BuildRequires:	pam-devel
+BuildRequires:	pkgconfig(dbus-glib-1)
+BuildRequires:	pkgconfig(gio-2.0) >= 2.26
+BuildRequires:	pkgconfig(gio-unix-2.0)
+BuildRequires:	pkgconfig(glib-2.0)
+BuildRequires:	pkgconfig(gmodule-export-2.0)
+BuildRequires:	pkgconfig(gobject-2.0)
+BuildRequires:	pkgconfig(gobject-introspection-1.0) >= 0.9.5
+BuildRequires:	pkgconfig(libxklavier)
+BuildRequires:	pkgconfig(QtCore)
+BuildRequires:	pkgconfig(QtDBus)
+BuildRequires:	pkgconfig(QtGui)
+BuildRequires:	pkgconfig(QtNetwork)
+BuildRequires:	pkgconfig(x11)
+BuildRequires:	pkgconfig(xcb)
+BuildRequires:	pkgconfig(xdmcp)
+Requires:	mandriva-theme
+# (tpg) TODO make use of updates-alternatives
+# to support other greeters like lightdm-webkit-dreeter
+# and finally replace this with suggests
+Requires:	lightdm-gtk-greeter
+Requires(pre,postun):	rpm-helper
+Provides:	dm
 
 %description
 LightDM is an X display manager that:
@@ -87,12 +91,14 @@ The QT development files and headers for %{name}.
 
 %prep
 %setup -q
+%patch0 -p1 -b .conf
 
 %build
 NOCONFIGURE=yes gnome-autogen.sh
 
 %configure2_5x \
 	--disable-static \
+	--with-greeter-user=%{dm_user} \
 	--with-greeter-user=%{dm_user} \
 	--with-greeter-session=%{greeter_session}
 
@@ -103,7 +109,7 @@ rm -rf %{buildroot}
 %makeinstall_std
 
 # make lightdm user home
-mkdir -p %{buildroot}%{_var}/lib/%{name}
+mkdir -p %{buildroot}%{_var}/run/%{name}
 
 install -D -m0755 utils/gdmflexiserver %{buildroot}%{_libexecdir}/%{name}/gdmflexiserver
 
@@ -121,7 +127,7 @@ install -m 644 %{SOURCE2} %{buildroot}%{_datadir}/X11/dm.d/35%{name}.conf
 %find_lang %{name} %{name}.lang
 
 %pre
-%_pre_useradd %{dm_user} %{_var}/lib/%{name} /bin/false
+%_pre_useradd %{dm_user} %{_var}/run/%{name} /bin/false
 %_pre_groupadd xgrp %{dm_user}
 
 %postun
@@ -141,7 +147,7 @@ install -m 644 %{SOURCE2} %{buildroot}%{_datadir}/X11/dm.d/35%{name}.conf
 %{_sbindir}/%{name}
 %{_libexecdir}/lightdm/*
 %{_mandir}/man1/%{name}.1*
-%attr(770, %{dm_user}, %{dm_user}) %dir %{_var}/lib/%{name}
+%attr(770, %{dm_user}, %{dm_user}) %dir %{_var}/run/%{name}
 
 %files -n %{libgobject}
 %{_libdir}/liblightdm-gobject-%{api}.so.%{major}*
