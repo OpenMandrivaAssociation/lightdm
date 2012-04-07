@@ -10,8 +10,8 @@
 %define	develqt 		%mklibname %{name}-qt -d
 
 Name:		lightdm
-Version:	1.1.9
-Release:	3
+Version:	1.2.0
+Release:	1
 Summary:	A lightweight display manager
 Group:		System/X11
 License:	GPLv3
