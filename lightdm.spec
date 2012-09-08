@@ -1,18 +1,18 @@
-%define	dm_user	lightdm
-%define greeter_session	lightdm-gtk-greeter
+%define dm_user lightdm
+%define greeter_session lightdm-gtk-greeter
 
-%define	api 1
-%define	qt_api 2
-%define	major 0
-%define	libgobject		%mklibname %{name}-gobject %{api} %{major}
-%define	develgobject	%mklibname %{name}-gobject -d
-%define	libqt 			%mklibname %{name}-qt %{qt_api} %{major}
-%define	develqt 		%mklibname %{name}-qt -d
+%define api 1
+%define qt_api 2
+%define major 0
+%define libgobject %mklibname %{name}-gobject %{api} %{major}
+%define develgobject %mklibname %{name}-gobject -d
+%define libqt %mklibname %{name}-qt %{qt_api} %{major}
+%define develqt %mklibname %{name}-qt -d
 
-Name:		lightdm
-Version:	1.2.0
-Release:	1
 Summary:	A lightweight display manager
+Name:		lightdm
+Version:	1.3.3
+Release:	1
 Group:		System/X11
 License:	GPLv3
 URL:		https://launchpad.net/lightdm
@@ -56,7 +56,7 @@ LightDM is an X display manager that:
 * Has a well defined interface between the server and user interface
 * Fully themeable (easiest with the webkit interface)
 * Cross-desktop (greeters can be written in any toolkit)
-  
+
 %package -n %{libgobject}
 Summary:	LightDM GObject client library
 Group:		System/Libraries
@@ -68,7 +68,7 @@ A GObject based library for LightDM clients to use to interface with LightDM.
 %package -n %{develgobject}
 Summary:	The GObject development files for %{name}
 Group:		Development/C
-Requires:	%{libgobject} = %{version}
+Requires:	%{libgobject} = %{version}-%{release}
 Obsoletes:	%{_lib}ldmgreeter-devel
 
 %description -n %{develgobject}
@@ -84,7 +84,7 @@ A Qt based library for LightDM clients to use to interface with LightDM.
 %package -n %{develqt}
 Summary:	The QT development files for %{name}
 Group:		Development/C++
-Requires:	%{libqt} = %{version}
+Requires:	%{libqt} = %{version}-%{release}
 
 %description -n %{develqt}
 The QT development files and headers for %{name}.
@@ -105,7 +105,6 @@ NOCONFIGURE=yes gnome-autogen.sh
 %make LIBS='-lgmodule-2.0 -lglib-2.0'
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std
 
 # make lightdm user home
@@ -124,7 +123,7 @@ install -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/pam.d/%{name}
 mkdir -p %{buildroot}%{_datadir}/X11/dm.d
 install -m 644 %{SOURCE2} %{buildroot}%{_datadir}/X11/dm.d/35%{name}.conf
 
-%find_lang %{name} %{name}.lang
+%find_lang %{name}
 
 %pre
 %_pre_useradd %{dm_user} %{_var}/run/%{name} /bin/false
