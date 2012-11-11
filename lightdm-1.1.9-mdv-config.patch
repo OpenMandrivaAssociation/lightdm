@@ -1,0 +1,21 @@
+diff -Naur lightdm-1.1.9/data/lightdm.conf lightdm-1.1.9.tpg/data/lightdm.conf
+--- lightdm-1.1.9/data/lightdm.conf	2012-03-08 04:53:30.000000000 +0000
++++ lightdm-1.1.9.tpg/data/lightdm.conf	2012-03-26 20:37:39.748525466 +0000
+@@ -23,7 +23,7 @@
+ #log-directory=/var/log/lightdm
+ #run-directory=/var/run/lightdm
+ #cache-directory=/var/cache/lightdm
+-#xsessions-directory=/usr/share/xsessions
++xsessions-directory=/etc/X11/dm/Sessions
+ #xgreeters-directory=/usr/share/xgreeters
+ 
+ #
+@@ -69,7 +69,7 @@
+ #user-session=default
+ #allow-guest=true
+ #guest-session=UNIMPLEMENTED
+-#session-wrapper=lightdm-session
++session-wrapper=/etc/X11/Xsession
+ #display-setup-script=
+ #greeter-setup-script=
+ #session-setup-script=
