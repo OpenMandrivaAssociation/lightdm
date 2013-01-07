@@ -1,22 +1,23 @@
 %define	dm_user	lightdm
 %define greeter_session	lightdm-greeter
 
-%define	api 1
-%define	qt_api 2
-%define	major 0
-%define	libgobject		%mklibname %{name}-gobject %{api} %{major}
+%define series	1.4
+%define	api	1
+%define	qt_api	2
+%define	major	0
+%define	libgobject	%mklibname %{name}-gobject %{api} %{major}
 %define	develgobject	%mklibname %{name}-gobject -d
-%define	libqt 			%mklibname %{name}-qt %{qt_api} %{major}
-%define	develqt 		%mklibname %{name}-qt -d
+%define	libqt 		%mklibname %{name}-qt %{qt_api} %{major}
+%define	develqt 	%mklibname %{name}-qt -d
 
-Name:		lightdm
-Version:	1.3.3
-Release:	1
 Summary:	A lightweight display manager
+Name:		lightdm
+Version:	1.4.0
+Release:	1
 Group:		System/X11
 License:	GPLv3
 URL:		https://launchpad.net/lightdm
-Source0:	https://launchpad.net/lightdm/+download/%{name}-%{version}.tar.gz
+Source0:	https://launchpad.net/lightdm/%{series}/%{version}/+download/%{name}-%{version}.tar.gz
 Source1:	%{name}.pam
 Source2:	35%{name}.conf
 Patch0:		lightdm-1.3.3-mdv-config.patch
@@ -92,21 +93,19 @@ The QT development files and headers for %{name}.
 
 %prep
 %setup -q
-%patch0 -p1 -b .conf
+%apply_patches
 
 %build
-NOCONFIGURE=yes gnome-autogen.sh
-
+#NOCONFIGURE=yes gnome-autogen.sh
 %configure2_5x \
 	--disable-static \
 	--enable-introspection \
 	--with-greeter-user=%{dm_user} \
 	--with-greeter-session=%{greeter_session}
 
-%make LIBS='-lgmodule-2.0 -lglib-2.0'
+%make LIBS='-lgmodule-2.0 -lglib-2.0 -lgobject-2.0'
 
 %install
-rm -rf %{buildroot}
 %makeinstall_std
 
 # make lightdm user home
@@ -170,55 +169,4 @@ install -m 644 %{SOURCE2} %{buildroot}%{_datadir}/X11/dm.d/35%{name}.conf
 %{_includedir}/lightdm-qt-%{qt_api}
 %{_libdir}/liblightdm-qt-%{qt_api}.so
 %{_libdir}/pkgconfig/liblightdm-qt-%{qt_api}.pc
-
-
-%changelog
-* Thu Sep 27 2012 Ural Mullabaev <ural.mullabaev@rosalab.ru> 1.3.3-1
-- update to version 1.3.3
-
-* Sat Apr 07 2012 Tomasz Pawel Gajc <tpg@mandriva.org> 1.2.0-1
-+ Revision: 789654
-- update to new version 1.2.0
-
-* Tue Mar 27 2012 Tomasz Pawel Gajc <tpg@mandriva.org> 1.1.9-3
-+ Revision: 787668
-- update pam configuration from gdm
-
-* Mon Mar 26 2012 Tomasz Pawel Gajc <tpg@mandriva.org> 1.1.9-2
-+ Revision: 787073
-- Patch0: adapt configuration to mdv
-- revert to use /var/run as a default home
-- add hard requires on lightdm-gtk-greeter (TODO: read spec)
-- spec file clean
-
-* Sun Mar 25 2012 Tomasz Pawel Gajc <tpg@mandriva.org> 1.1.9-1
-+ Revision: 786625
-- update to new version 1.1.9
-
-* Fri Mar 02 2012 Matthew Dawkins <mattydaw@mandriva.org> 1.1.4-1
-+ Revision: 781798
-- new version 1.1.4
-- complete rework of the spec
-- new libs
-- lightdm user setup
-- no more pkgd greeters
-
-  + Lev Givon <lev@mandriva.org>
-    - Rebuild against webkit 1.4.2.
-
-  + Funda Wang <fwang@mandriva.org>
-    - add br
-    - rebuild for new webkit
-
-  + Tomasz Pawel Gajc <tpg@mandriva.org>
-    - set default patch to session files
-
-* Sun Aug 29 2010 Tomasz Pawel Gajc <tpg@mandriva.org> 0.1.1-2mdv2011.0
-+ Revision: 574242
-- add support to mdv DM detection mechanism
-- add pam support
-
-* Sun Aug 29 2010 Tomasz Pawel Gajc <tpg@mandriva.org> 0.1.1-1mdv2011.0
-+ Revision: 574025
-- import lightdm
 
