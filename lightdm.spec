@@ -20,6 +20,9 @@ URL:		http://www.freedesktop.org/wiki/Software/LightDM
 Source0:	https://launchpad.net/lightdm/%{series}/%{version}/+download/%{name}-%{version}.tar.gz
 Source1:	%{name}.pam
 Source2:	35%{name}.conf
+Source3:	lightdm.rules
+Source4:	lightdm.service
+Source5:	lightdm-tmpfiles.conf
 Patch0:		lightdm-1.3.3-mdv-config.patch
 BuildRequires:	gnome-common
 BuildRequires:	gtk-doc
@@ -125,11 +128,19 @@ install -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/pam.d/%{name}
 mkdir -p %{buildroot}%{_datadir}/X11/dm.d
 install -m 644 %{SOURCE2} %{buildroot}%{_datadir}/X11/dm.d/35%{name}.conf
 
+# systemd stuff
+install -Dpm 644 %{SOURCE3} %{buildroot}%{_datadir}/polkit-1/rules.d/lightdm.rules
+install -Dpm 644 %{SOURCE4} %{buildroot}%{_unitdir}/lightdm.service
+install -Dpm 644 %{SOURCE5} %{buildroot}%{_sysconfdir}/tmpfiles.d/lightdm.conf
+
 %find_lang %{name} %{name}.lang
 
 %pre
 %_pre_useradd %{dm_user} %{_var}/run/%{name} /bin/false
 %_pre_groupadd xgrp %{dm_user}
+
+%post
+systemd-tmpfiles --create %{name}.conf
 
 %postun
 %_postun_userdel %{dm_user}
@@ -144,11 +155,14 @@ install -m 644 %{SOURCE2} %{buildroot}%{_datadir}/X11/dm.d/35%{name}.conf
 %config(noreplace) %{_datadir}/X11/dm.d/35%{name}.conf
 %{_sysconfdir}/dbus-1/system.d/org.freedesktop.DisplayManager.conf
 %{_sysconfdir}/init/%{name}.conf
+%{_sysconfdir}/tmpfiles.d/lightdm.conf
+%{_unitdir}/lightdm.service
 %{_bindir}/dm-tool
 %{_sbindir}/%{name}
 %{_libexecdir}/lightdm/*
 %{_mandir}/man1/%{name}.1*
 %{_datadir}/help/C/%{name}/
+%{_datadir}/polkit-1/rules.d/lightdm.rules
 %attr(770, %{dm_user}, %{dm_user}) %dir %{_var}/run/%{name}
 
 %files -n %{libgobject}
