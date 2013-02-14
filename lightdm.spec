@@ -23,29 +23,36 @@ Source2:	35%{name}.conf
 Source3:	lightdm.rules
 Source4:	lightdm.service
 Source5:	lightdm-tmpfiles.conf
+
 Patch0:		lightdm-1.3.3-mdv-config.patch
-BuildRequires:	gnome-common
-BuildRequires:	gtk-doc
-BuildRequires:	intltool >= 0.35.0
-BuildRequires:	itstool
-BuildRequires:	yelp-tools
-BuildRequires:	gettext-devel
-BuildRequires:	pam-devel
-BuildRequires:	pkgconfig(dbus-glib-1)
-BuildRequires:	pkgconfig(gio-2.0) >= 2.26
-BuildRequires:	pkgconfig(gio-unix-2.0)
-BuildRequires:	pkgconfig(glib-2.0)
-BuildRequires:	pkgconfig(gmodule-export-2.0)
-BuildRequires:	pkgconfig(gobject-2.0)
-BuildRequires:	pkgconfig(gobject-introspection-1.0) >= 0.9.5
-BuildRequires:	pkgconfig(libxklavier)
-BuildRequires:	pkgconfig(QtCore)
-BuildRequires:	pkgconfig(QtDBus)
-BuildRequires:	pkgconfig(QtGui)
-BuildRequires:	pkgconfig(QtNetwork)
-BuildRequires:	pkgconfig(x11)
-BuildRequires:	pkgconfig(xcb)
-BuildRequires:	pkgconfig(xdmcp)
+Patch1:		lightdm-1.3.2-pam-modules.patch
+# Patches from Fedora:
+Patch2:		lightdm-1.3.1-nodaemon_option.patch
+# Patches originally from Fedora:
+Patch3:		lightdm-1.4.0-systemd_login1_power.patch
+
+#BuildRequires:	gnome-common
+#BuildRequires:	gtk-doc
+#BuildRequires:	intltool >= 0.35.0
+#BuildRequires:	itstool
+#BuildRequires:	yelp-tools
+#BuildRequires:	gettext-devel
+#BuildRequires:	pam-devel
+#BuildRequires:	pkgconfig(dbus-glib-1)
+#BuildRequires:	pkgconfig(gio-2.0) >= 2.26
+#BuildRequires:	pkgconfig(gio-unix-2.0)
+#BuildRequires:	pkgconfig(glib-2.0)
+#BuildRequires:	pkgconfig(gmodule-export-2.0)
+#BuildRequires:	pkgconfig(gobject-2.0)
+#BuildRequires:	pkgconfig(gobject-introspection-1.0) >= 0.9.5
+#BuildRequires:	pkgconfig(libxklavier)
+#BuildRequires:	pkgconfig(QtCore)
+#BuildRequires:	pkgconfig(QtDBus)
+#BuildRequires:	pkgconfig(QtGui)
+#BuildRequires:	pkgconfig(QtNetwork)
+#BuildRequires:	pkgconfig(x11)
+#BuildRequires:	pkgconfig(xcb)
+#BuildRequires:	pkgconfig(xdmcp)
 Requires:	mandriva-theme
 # (tpg) TODO make use of updates-alternatives
 # to support other greeters like lightdm-webkit-dreeter
@@ -58,11 +65,11 @@ Requires:	accountsservice
 %description
 LightDM is an X display manager that:
 * Has a lightweight codebase
-* Is standards compliant (PAM, ConsoleKit, etc)
+* Is standards compliant (PAM, systemd-login, etc)
 * Has a well defined interface between the server and user interface
 * Fully themeable (easiest with the webkit interface)
 * Cross-desktop (greeters can be written in any toolkit)
-  
+
 %package -n %{libgobject}
 Summary:	LightDM GObject client library
 Group:		System/Libraries
@@ -115,7 +122,9 @@ The QT development files and headers for %{name}.
 # make lightdm user home
 mkdir -p %{buildroot}%{_var}/run/%{name}
 
-install -D -m0755 utils/gdmflexiserver %{buildroot}%{_libexecdir}/%{name}/gdmflexiserver
+install -d %{buildroot}%{_localstatedir}/log/%{name}
+touch %{buildroot}%{_localstatedir}/log/%{name}/%{name}.log
+mkdir -p %{buildroot}%{_datadir}/%{name}/remote-sessions
 
 # remove apparmor stuff
 rm -f %{buildroot}%{_sysconfdir}/apparmor.d/lightdm-guest-session
@@ -148,11 +157,16 @@ systemd-tmpfiles --create %{name}.conf
 
 %files -f %{name}.lang
 %dir %{_sysconfdir}/%{name}
+%dir %{_datadir}/%{name}
+%dir %{_datadir}/%{name}/remote-sessions
 %config(noreplace) %{_sysconfdir}/%{name}/keys.conf
 %config(noreplace) %{_sysconfdir}/%{name}/lightdm.conf
 %config(noreplace) %{_sysconfdir}/%{name}/users.conf
 %config(noreplace) %{_sysconfdir}/pam.d/%{name}*
 %config(noreplace) %{_datadir}/X11/dm.d/35%{name}.conf
+%attr(770, %{dm_user}, %{dm_user}) %dir %{_var}/run/%{name}
+%attr(-,%{dm_user},%{dm_user}) %{_localstatedir}/log/%{name}/
+%ghost %{_localstatedir}/log/%{name}/%{name}.log
 %{_sysconfdir}/dbus-1/system.d/org.freedesktop.DisplayManager.conf
 %{_sysconfdir}/init/%{name}.conf
 %{_sysconfdir}/tmpfiles.d/lightdm.conf
@@ -163,7 +177,6 @@ systemd-tmpfiles --create %{name}.conf
 %{_mandir}/man1/%{name}.1*
 %{_datadir}/help/C/%{name}/
 %{_datadir}/polkit-1/rules.d/lightdm.rules
-%attr(770, %{dm_user}, %{dm_user}) %dir %{_var}/run/%{name}
 
 %files -n %{libgobject}
 %{_libdir}/liblightdm-gobject-%{api}.so.%{major}*

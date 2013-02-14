@@ -1,0 +1,63 @@
+diff -p -up ./data/pam/lightdm-autologin.pamfix ./data/pam/lightdm-autologin
+--- ./data/pam/lightdm-autologin.pamfix	2011-12-09 01:51:23.000000000 +0000
++++ ./data/pam/lightdm-autologin	2012-07-17 17:40:30.826902731 +0000
+@@ -6,8 +6,8 @@ auth      required pam_nologin.so
+ # Load environment from /etc/environment and ~/.pam_environment
+ auth      required pam_env.so
+ 
+-# Use /etc/passwd and /etc/shadow for passwords
+-auth      required pam_unix.so
++# Allow login without password
++auth      required pam_permit.so
+ 
+ # Stop autologin if account requires action
+ account   required pam_unix.so
+@@ -17,3 +17,9 @@ password  required pam_deny.so
+ 
+ # Setup session
+ session   required pam_unix.so
++
++# To set ACLs correctly with systemd
++session   required pam_systemd.so
++
++# To get apps needing consolehelper working
++session   optional pam_console.so
+diff -p -up ./data/pam/lightdm-greeter.pamfix ./data/pam/lightdm-greeter
+--- ./data/pam/lightdm-greeter.pamfix	2011-12-09 01:51:23.000000000 +0000
++++ ./data/pam/lightdm-greeter	2012-07-17 17:40:30.826902731 +0000
+@@ -14,3 +14,6 @@ password  required pam_deny.so
+ 
+ # Setup session
+ session   required pam_unix.so
++
++# To allow reboot etc from greeter menu
++session   required pam_systemd.so
+diff -p -up ./data/pam/lightdm.pamfix ./data/pam/lightdm
+--- ./data/pam/lightdm.pamfix	2011-12-09 01:51:23.000000000 +0000
++++ ./data/pam/lightdm	2012-07-17 17:41:36.566109910 +0000
+@@ -9,6 +9,9 @@ auth      required pam_env.so
+ # Use /etc/passwd and /etc/shadow for passwords
+ auth      required pam_unix.so
+ 
++# Gnome Keyring's PAM support
++auth      optional pam_gnome_keyring.so
++
+ # Check account is active, change password if required
+ account   required pam_unix.so
+ 
+@@ -17,3 +20,15 @@ password  required pam_unix.so
+ 
+ # Setup session
+ session   required pam_unix.so
++
++# To set ACLs correctly with systemd
++session   required pam_systemd.so
++
++# To get apps needing consolehelper working
++session   optional pam_console.so
++
++# Gnome Keyring's PAM support
++session   optional pam_gnome_keyring.so auto_start
++
++# To enable tmpfs for xguest account (mga#4950)
++session   required pam_namespace.so
