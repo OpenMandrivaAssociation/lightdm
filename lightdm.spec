@@ -31,28 +31,28 @@ Patch2:		lightdm-1.3.1-nodaemon_option.patch
 # Patches originally from Fedora:
 Patch3:		lightdm-1.4.0-systemd_login1_power.patch
 
-#BuildRequires:	gnome-common
-#BuildRequires:	gtk-doc
-#BuildRequires:	intltool >= 0.35.0
-#BuildRequires:	itstool
-#BuildRequires:	yelp-tools
-#BuildRequires:	gettext-devel
-#BuildRequires:	pam-devel
-#BuildRequires:	pkgconfig(dbus-glib-1)
-#BuildRequires:	pkgconfig(gio-2.0) >= 2.26
-#BuildRequires:	pkgconfig(gio-unix-2.0)
-#BuildRequires:	pkgconfig(glib-2.0)
-#BuildRequires:	pkgconfig(gmodule-export-2.0)
-#BuildRequires:	pkgconfig(gobject-2.0)
-#BuildRequires:	pkgconfig(gobject-introspection-1.0) >= 0.9.5
-#BuildRequires:	pkgconfig(libxklavier)
-#BuildRequires:	pkgconfig(QtCore)
-#BuildRequires:	pkgconfig(QtDBus)
-#BuildRequires:	pkgconfig(QtGui)
-#BuildRequires:	pkgconfig(QtNetwork)
-#BuildRequires:	pkgconfig(x11)
-#BuildRequires:	pkgconfig(xcb)
-#BuildRequires:	pkgconfig(xdmcp)
+BuildRequires:	gnome-common
+BuildRequires:	gtk-doc
+BuildRequires:	intltool >= 0.35.0
+BuildRequires:	itstool
+BuildRequires:	yelp-tools
+BuildRequires:	gettext-devel
+BuildRequires:	pam-devel
+BuildRequires:	pkgconfig(dbus-glib-1)
+BuildRequires:	pkgconfig(gio-2.0) >= 2.26
+BuildRequires:	pkgconfig(gio-unix-2.0)
+BuildRequires:	pkgconfig(glib-2.0)
+BuildRequires:	pkgconfig(gmodule-export-2.0)
+BuildRequires:	pkgconfig(gobject-2.0)
+BuildRequires:	pkgconfig(gobject-introspection-1.0) >= 0.9.5
+BuildRequires:	pkgconfig(libxklavier)
+BuildRequires:	pkgconfig(QtCore)
+BuildRequires:	pkgconfig(QtDBus)
+BuildRequires:	pkgconfig(QtGui)
+BuildRequires:	pkgconfig(QtNetwork)
+BuildRequires:	pkgconfig(x11)
+BuildRequires:	pkgconfig(xcb)
+BuildRequires:	pkgconfig(xdmcp)
 Requires:	mandriva-theme
 # (tpg) TODO make use of updates-alternatives
 # to support other greeters like lightdm-webkit-dreeter
