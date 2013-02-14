@@ -1,22 +1,22 @@
-%define	dm_user	lightdm
-%define greeter_session	lightdm-greeter
+%define dm_user lightdm
+%define greeter_session lightdm-greeter
 
-%define series	1.4
-%define	api	1
-%define	qt_api	2
-%define	major	0
-%define	libgobject	%mklibname %{name}-gobject %{api} %{major}
-%define	develgobject	%mklibname %{name}-gobject -d
-%define	libqt 		%mklibname %{name}-qt %{qt_api} %{major}
-%define	develqt 	%mklibname %{name}-qt -d
+%define series 1.4
+%define api 1
+%define qt_api 2
+%define major 0
+%define libgobject %mklibname %{name}-gobject %{api} %{major}
+%define develgobject %mklibname %{name}-gobject -d
+%define libqt %mklibname %{name}-qt %{qt_api} %{major}
+%define develqt %mklibname %{name}-qt -d
 
 Summary:	A lightweight display manager
 Name:		lightdm
 Version:	1.4.0
-Release:	1
+Release:	2
 Group:		System/X11
 License:	GPLv3
-URL:		https://launchpad.net/lightdm
+URL:		http://www.freedesktop.org/wiki/Software/LightDM
 Source0:	https://launchpad.net/lightdm/%{series}/%{version}/+download/%{name}-%{version}.tar.gz
 Source1:	%{name}.pam
 Source2:	35%{name}.conf
@@ -50,6 +50,7 @@ Requires:	mandriva-theme
 Requires:	lightdm-greeter
 Requires(pre,postun):	rpm-helper
 Provides:	dm
+Requires:	accountsservice
 
 %description
 LightDM is an X display manager that:
