@@ -165,7 +165,7 @@ systemd-tmpfiles --create %{name}.conf
 %config(noreplace) %{_sysconfdir}/pam.d/%{name}*
 %config(noreplace) %{_datadir}/X11/dm.d/35%{name}.conf
 %attr(770, %{dm_user}, %{dm_user}) %dir %{_var}/run/%{name}
-%attr(-,%{dm_user},%{dm_user}) %{_localstatedir}/log/%{name}/
+%attr(-,%{dm_user},%{dm_user}) %{_localstatedir}/log/%{name}
 %ghost %{_localstatedir}/log/%{name}/%{name}.log
 %{_sysconfdir}/dbus-1/system.d/org.freedesktop.DisplayManager.conf
 %{_sysconfdir}/init/%{name}.conf
