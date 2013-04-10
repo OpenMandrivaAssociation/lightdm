@@ -17,7 +17,7 @@ Release:	1
 Group:		System/X11
 License:	GPLv3
 URL:		http://www.freedesktop.org/wiki/Software/LightDM
-Source0:	https://launchpad.net/lightdm/%{series}/%{version}/+download/%{name}-%{version}.tar.gz
+Source0:	https://launchpad.net/lightdm/%{series}/%{version}/+download/%{name}-%{version}.tar.xz
 Source1:	%{name}.pam
 Source2:	35%{name}.conf
 Source3:	lightdm.rules
