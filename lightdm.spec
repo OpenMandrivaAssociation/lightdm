@@ -12,8 +12,8 @@
 
 Summary:	A lightweight display manager
 Name:		lightdm
-Version:	1.4.0
-Release:	2
+Version:	1.5.3
+Release:	1
 Group:		System/X11
 License:	GPLv3
 URL:		http://www.freedesktop.org/wiki/Software/LightDM
