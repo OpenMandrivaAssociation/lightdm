@@ -7,7 +7,7 @@
 
 Summary:	The Light Display Manager
 Name:		lightdm
-Version:	1.7.16
+Version:	1.7.18
 Release:	1
 License:	GPLv3+
 Group:		Graphical desktop/Other
