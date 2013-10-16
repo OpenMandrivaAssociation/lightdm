@@ -3,5 +3,6 @@ removed_sources:
   lightdm-1.7.12.tar.xz: 55e8a65c4b61e4b4e411180d9493b9b536a9fe3c
   lightdm-1.7.15.tar.xz: a1cf66060ceb00a7fb7bbd9ea609dfeead8ab560
   lightdm-1.7.16.tar.xz: fc91d53b42d217e5628e25be7e1c66befd6cd569
-sources:
   lightdm-1.7.18.tar.xz: 07e16044fa922db481598bdf9e6c71d6b3709304
+sources:
+  lightdm-1.8.2.tar.xz: c314e4cf94983a71371189bd812a147145cd8981
