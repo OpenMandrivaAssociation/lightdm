@@ -8,7 +8,7 @@
 Summary:	The Light Display Manager
 Name:		lightdm
 Version:	1.8.2
-Release:	2
+Release:	3
 License:	GPLv3+
 Group:		Graphical desktop/Other
 Source0:	https://launchpad.net/lightdm/1.8/%{version}/+download/%{name}-%{version}.tar.xz
