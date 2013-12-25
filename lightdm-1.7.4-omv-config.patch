@@ -1,7 +1,8 @@
-diff -up ./data/lightdm.conf.mga ./data/lightdm.conf
---- ./data/lightdm.conf.mga	2013-07-01 02:11:58.000000000 +0000
-+++ ./data/lightdm.conf	2013-07-01 14:01:29.249516791 +0000
-@@ -20,7 +20,7 @@
+diff --git a/data/lightdm.conf b/data/lightdm.conf
+index 693f551..562ed05 100644
+--- a/data/lightdm.conf
++++ b/data/lightdm.conf
+@@ -19,7 +19,7 @@
  #start-default-seat=true
  #greeter-user=lightdm
  #minimum-display-number=0
@@ -10,18 +11,19 @@ diff -up ./data/lightdm.conf.mga ./data/lightdm.conf
  #lock-memory=true
  #user-authority-in-system-dir=false
  #guest-account-script=guest-account
-@@ -85,7 +85,7 @@
+@@ -92,7 +92,7 @@
  #user-session=default
  #allow-guest=true
  #guest-session=UNIMPLEMENTED
 -#session-wrapper=lightdm-session
 +session-wrapper=/etc/lightdm/Xsession
  #greeter-wrapper=
+ #guest-wrapper=
  #display-setup-script=
- #greeter-setup-script=
-diff -up ./data/users.conf.mga ./data/users.conf
---- ./data/users.conf.mga	2013-06-04 05:27:33.000000000 +0000
-+++ ./data/users.conf	2013-07-01 13:58:40.454336475 +0000
+diff --git a/data/users.conf b/data/users.conf
+index 05207ce..4c83c96 100644
+--- a/data/users.conf
++++ b/data/users.conf
 @@ -11,4 +11,4 @@
  [UserAccounts]
  minimum-uid=500
