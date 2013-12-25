@@ -7,11 +7,11 @@
 
 Summary:	The Light Display Manager
 Name:		lightdm
-Version:	1.8.5
+Version:	1.9.5
 Release:	1
 License:	GPLv3+
 Group:		Graphical desktop/Other
-Source0:	https://launchpad.net/lightdm/1.8/%{version}/+download/%{name}-%{version}.tar.xz
+Source0:	https://launchpad.net/lightdm/1.9/%{version}/+download/%{name}-%{version}.tar.xz
 Source1:	29lightdm.conf
 Source2:	Xsession
 #Systemd related:
@@ -300,7 +300,8 @@ rm -rf %{buildroot}%{_sysconfdir}/{init,apparmor.d}/
 %{_datadir}/help/C/%{name}/*
 %{_sbindir}/%{name}
 %{_bindir}/dm-tool
-%{_libexecdir}/%{name}/
+%{_libexecdir}/%{name}-guest-session
 %{_mandir}/man1/%{name}*
+%{_mandir}/man1/dm-*
 %{_tmpfilesdir}/lightdm.conf
 %{_unitdir}/lightdm.service
