@@ -7,7 +7,7 @@ index 693f551..562ed05 100644
  #greeter-user=lightdm
  #minimum-display-number=0
 -#minimum-vt=7
-+minimum-vt=1
++minimum-vt=7
  #lock-memory=true
  #user-authority-in-system-dir=false
  #guest-account-script=guest-account
