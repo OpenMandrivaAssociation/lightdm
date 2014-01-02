@@ -1,0 +1,9 @@
+#!/bin/bash -login
+
+[ -f /etc/profile ] && . /etc/profile
+[ -f ~/.profile ] && . ~/.profile
+
+exec /etc/X11/Xsession $*
+
+# Xsession ends here
+
