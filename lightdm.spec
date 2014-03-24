@@ -7,7 +7,7 @@
 
 Summary:	The Light Display Manager
 Name:		lightdm
-Version:	1.9.5
+Version:	1.9.6
 Release:	1
 License:	GPLv3+
 Group:		Graphical desktop/Other
@@ -217,7 +217,7 @@ sed -i '1iACLOCAL_AMFLAGS=-I m4' Makefile.am
 %build
 autoreconf -vfi
 
-export PATH=$PATH:%{_qt4_bindir}
+export PATH=$PATH:%{qt4bin}
 %configure2_5x \
 	--disable-static \
 	--disable-tests \
