@@ -240,10 +240,10 @@ export PATH=%{_qt4_bindir}:$PATH
 %makeinstall_std
 
 # dm config
-install -Dpm644 %{_sourcedir}/29lightdm.conf %{buildroot}/%{_datadir}/X11/dm.d/29lightdm.conf
+install -Dpm644 %{SOURCE1} %{buildroot}/%{_datadir}/X11/dm.d/29lightdm.conf
 
 # session wrapper script to source /etc/profile and ~/.profile if they exists
-install -Dpm755 %{_sourcedir}/Xsession %{buildroot}/%{_sysconfdir}/%{name}/Xsession
+install -Dpm755 %{SOURCE2} %{buildroot}/%{_sysconfdir}/%{name}/Xsession
 
 # will be created when lightdm starts
 install -d %{buildroot}%{_logdir}/%{name}
@@ -252,22 +252,22 @@ touch %{buildroot}%{_logdir}/%{name}/%{name}.log
 # directory for remote sessions
 mkdir -p %{buildroot}%{_datadir}/%{name}/remote-sessions
 
-# mageia specific config overrides
-install -Dpm644 %{_sourcedir}/lightdm-settings.conf %{buildroot}%{_sysconfdir}/%{name}/%{name}.conf.d/50-%{_vendor}.conf
+# distro specific config overrides
+install -Dpm644 %{SOURCE3} %{buildroot}%{_sysconfdir}/%{name}/%{name}.conf.d/50-%{_vendor}.conf
 
 # autologin config file for drakboot
-install -Dpm644 %{_sourcedir}/lightdm-autologin-config.conf %{buildroot}%{_sysconfdir}/%{name}/%{name}.conf.d/50-%{_vendor}-autologin.conf
+install -Dpm644 %{SOURCE4} %{buildroot}%{_sysconfdir}/%{name}/%{name}.conf.d/50-%{_vendor}-autologin.conf
 
 # for systemd
-install -Dpm 644 %{_sourcedir}/lightdm-tmpfiles.conf %{buildroot}%{_tmpfilesdir}/lightdm.conf
-install -Dpm 644 %{_sourcedir}/lightdm.service %{buildroot}%{_unitdir}/lightdm.service
-install -Dpm 644 %{_sourcedir}/lightdm.rules %{buildroot}%{_datadir}/polkit-1/rules.d/lightdm.rules
+install -Dpm 644 %{SOURCE10} %{buildroot}%{_tmpfilesdir}/lightdm.conf
+install -Dpm 644 %{SOURCE11} %{buildroot}%{_unitdir}/lightdm.service
+install -Dpm 644 %{SOURCE12} %{buildroot}%{_datadir}/polkit-1/rules.d/lightdm.rules
 
 # pam configs stolen from gdm
 rm -rf %{buildroot}%{_sysconfdir}/pam.d/
-install -Dpm 644 %{_sourcedir}/lightdm.pam %{buildroot}%{_sysconfdir}/pam.d/%{name}
-install -Dpm 644 %{_sourcedir}/lightdm-autologin.pam %{buildroot}%{_sysconfdir}/pam.d/%{name}-autologin
-install -Dpm 644 %{_sourcedir}/lightdm-greeter.pam %{buildroot}%{_sysconfdir}/pam.d/%{name}-greeter
+install -Dpm 644 %{SOURCE20} %{buildroot}%{_sysconfdir}/pam.d/%{name}
+install -Dpm 644 %{SOURCE21} %{buildroot}%{_sysconfdir}/pam.d/%{name}-autologin
+install -Dpm 644 %{SOURCE22} %{buildroot}%{_sysconfdir}/pam.d/%{name}-greeter
 
 #home dir for lightdm user
 mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}
