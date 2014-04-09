@@ -1,7 +1,7 @@
 diff -up ./src/lightdm.c.nodaemon ./src/lightdm.c
---- ./src/lightdm.c.nodaemon	2013-04-19 02:56:41.000000000 +0000
-+++ ./src/lightdm.c	2013-05-01 09:20:57.963353649 +0000
-@@ -872,7 +872,7 @@ main (int argc, char **argv)
+--- ./src/lightdm.c.nodaemon	2013-10-30 20:41:12.000000000 +0200
++++ ./src/lightdm.c	2013-10-31 20:17:01.353422158 +0200
+@@ -994,7 +994,7 @@ main (int argc, char **argv)
          g_printerr (/* Text printed out when an unknown command-line argument provided */
                      _("Run '%s --help' to see a full list of available command line options."), argv[0]);
          g_printerr ("\n");

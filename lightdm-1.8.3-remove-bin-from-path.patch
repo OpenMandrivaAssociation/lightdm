@@ -1,7 +1,7 @@
 diff -up ./src/seat.c.path ./src/seat.c
---- ./src/seat.c.path	2013-05-05 18:37:23.059732617 +0000
-+++ ./src/seat.c	2013-05-05 18:39:13.069183752 +0000
-@@ -262,7 +262,7 @@ run_script (Seat *seat, Display *display
+--- ./src/seat.c.path	2013-10-30 22:41:46.000000000 +0200
++++ ./src/seat.c	2013-10-31 20:17:01.343422562 +0200
+@@ -267,7 +267,7 @@ run_script (Seat *seat, DisplayServer *d
          process_set_env (script, "PATH", g_getenv ("PATH"));
      }
      else
@@ -11,9 +11,9 @@ diff -up ./src/seat.c.path ./src/seat.c
      if (user)
      {
 diff -up ./src/session-child.c.path ./src/session-child.c
---- ./src/session-child.c.path	2013-05-05 18:58:23.973137664 +0000
-+++ ./src/session-child.c	2013-05-05 18:59:07.897347676 +0000
-@@ -349,7 +349,7 @@ session_child_run (int argc, char **argv
+--- ./src/session-child.c.path	2013-10-30 22:41:46.000000000 +0200
++++ ./src/session-child.c	2013-10-31 20:17:01.345422481 +0200
+@@ -354,7 +354,7 @@ session_child_run (int argc, char **argv
          else
          {
              /* Set POSIX variables */

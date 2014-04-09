@@ -1,6 +1,6 @@
 diff -up ./utils/gdmflexiserver.lock ./utils/gdmflexiserver
---- ./utils/gdmflexiserver.lock	2013-03-06 02:40:10.000000000 +0000
-+++ ./utils/gdmflexiserver	2013-05-01 09:24:34.626460201 +0000
+--- ./utils/gdmflexiserver.lock	2013-10-09 06:16:00.000000000 +0300
++++ ./utils/gdmflexiserver	2013-10-31 20:25:19.510330296 +0200
 @@ -9,9 +9,47 @@
  #
  # See http://www.gnu.org/copyleft/gpl.html for the full text of the license.
