@@ -7,7 +7,7 @@
 
 Summary:	The Light Display Manager
 Name:		lightdm
-Version:	1.10.0
+Version:	1.11.8
 Release:	4
 License:	GPLv3+
 Group:		Graphical desktop/Other
@@ -30,7 +30,7 @@ Source22:	lightdm-greeter.pam
 # mga patches:
 Patch3:		lightdm-1.8.3-remove-bin-from-path.patch
 # originally from Fedora:
-Patch10:	lightdm-1.8.3-nodaemon_option.patch
+Patch10:	lightdm-1.11.7-nodaemon_option.patch
 BuildRequires:	intltool
 BuildRequires:	gnome-common
 BuildRequires:	gtk-doc
@@ -218,10 +218,10 @@ autoreconf -vfi
 %if %{build_qt5}
 export PATH=%{_qt5_bindir}:$PATH
 %else
-export PATH=%{_qt4_bindir}:$PATH
+export PATH=%{qt4bin}:$PATH
 %endif
 
-%configure2_5x \
+%configure \
 	--disable-static \
 	--disable-tests \
 	--enable-introspection \
