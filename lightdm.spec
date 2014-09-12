@@ -8,7 +8,7 @@
 Summary:	The Light Display Manager
 Name:		lightdm
 Version:	1.9.6
-Release:	1
+Release:	1.1
 License:	GPLv3+
 Group:		Graphical desktop/Other
 Source0:	https://launchpad.net/lightdm/1.9/%{version}/+download/%{name}-%{version}.tar.xz
@@ -55,7 +55,7 @@ BuildRequires:	pkgconfig(x11)
 BuildRequires:	libgcrypt-devel
 Requires:	lightdm-greeter
 Requires:	accountsservice
-Requires(pre,postun):   rpm-helper
+Requires(pre,post,postun,preun):   rpm-helper
 Requires:	distro-theme-OpenMandriva
 Provides:	dm
 
@@ -269,15 +269,16 @@ rm -rf %{buildroot}%{_sysconfdir}/{init,apparmor.d}/
 %_pre_useradd %{name} %{_var}/run/%{name} /bin/false
 %_pre_groupadd xgrp %{name}
 
-%preun
-%_preun_service %{name}
-
 %post
 %create_ghostfile %{_localstatedir}/log/%{name}/%{name}.log %{name} %{name} 0644
 %tmpfiles_create %{name}
-%_post_service %{name}
+%systemd_post xdm.service
+
+%preun
+%systemd_preun xdm.service
 
 %postun
+%systemd_postun
 %_postun_userdel %{name}
 %_postun_groupdel xgrp %{name}
 
