@@ -1,14 +1,14 @@
 %define url_ver %(echo %{version}|cut -d. -f1,2)
 
-%define build_qt5	0
-%define api	1
-%define qtapi	3
-%define major	0
+%define build_qt5 0
+%define api 1
+%define qtapi 3
+%define major 0
 
 Summary:	The Light Display Manager
 Name:		lightdm
 Version:	1.11.8
-Release:	4
+Release:	5
 License:	GPLv3+
 Group:		Graphical desktop/Other
 Url:		http://www.freedesktop.org/wiki/Software/LightDM
@@ -58,6 +58,7 @@ BuildRequires:	pkgconfig(xdmcp)
 BuildRequires:	pkgconfig(xcb)
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	libgcrypt-devel
+Requires(post,postun,preun):	rpm-helper
 Requires:	lightdm-greeter
 Requires:	accountsservice
 Suggests:	light-locker
@@ -283,17 +284,16 @@ rm -rf %{buildroot}%{_sysconfdir}/{init,apparmor.d}/
 %pre
 %_pre_useradd %{name} %{_localstatedir}/lib/%{name} /sbin/nologin
 
-%if 0
-%preun
-%_preun_service %{name}
-%endif
-
 %post
 %create_ghostfile %{_logdir}/%{name}/%{name}.log root root 0600
+%tmpfiles_create slim.conf
+%systemd_post lightdm.service
 
-%if 0
-%_post_service %{name}
-%endif
+%preun
+%systemd_preun lightdm.service
+
+%postun
+%systemd_postun
 
 %files -f %{name}.lang
 %dir %{_sysconfdir}/%{name}
