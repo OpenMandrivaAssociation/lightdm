@@ -8,7 +8,7 @@
 Summary:	The Light Display Manager
 Name:		lightdm
 Version:	1.11.8
-Release:	6
+Release:	7
 License:	GPLv3+
 Group:		Graphical desktop/Other
 Url:		http://www.freedesktop.org/wiki/Software/LightDM
@@ -58,6 +58,7 @@ BuildRequires:	pkgconfig(xdmcp)
 BuildRequires:	pkgconfig(xcb)
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	libgcrypt-devel
+Requires:	typelib(LightDM)
 Requires(post,postun,preun):	rpm-helper
 Requires:	lightdm-greeter
 Requires:	accountsservice
@@ -293,7 +294,7 @@ rm -rf %{buildroot}%{_sysconfdir}/{init,apparmor.d}/
 %systemd_preun lightdm.service
 
 %postun
-%systemd_postun
+%systemd_postun lightdm.service
 
 %files -f %{name}.lang
 %dir %{_sysconfdir}/%{name}
