@@ -8,14 +8,14 @@
 Summary:	The Light Display Manager
 Name:		lightdm
 Version:	1.11.8
-Release:	8
+Release:	9
 License:	GPLv3+
 Group:		Graphical desktop/Other
 Url:		http://www.freedesktop.org/wiki/Software/LightDM
 Source0:	https://launchpad.net/lightdm/%{url_ver}/%{version}/+download/%{name}-%{version}.tar.xz
 Source1:	29lightdm.conf
 Source2:	Xsession
-# Mageia specific settings overrides
+# specific settings overrides
 Source3:	lightdm-settings.conf
 # For autologin configuration via drakboot
 Source4:	lightdm-autologin-config.conf
@@ -23,6 +23,7 @@ Source4:	lightdm-autologin-config.conf
 Source10:	lightdm-tmpfiles.conf
 Source11:	lightdm.service
 Source12:	lightdm.rules
+Source13:	lightdm-users.conf
 # PAM configs stolen from gdm
 Source20:	lightdm.pam
 Source21:	lightdm-autologin.pam
@@ -255,7 +256,10 @@ touch %{buildroot}%{_logdir}/%{name}/%{name}.log
 mkdir -p %{buildroot}%{_datadir}/%{name}/remote-sessions
 
 # distro specific config overrides
-install -Dpm644 %{SOURCE3} %{buildroot}%{_sysconfdir}/%{name}/%{name}.conf.d/50-%{_vendor}.conf
+rm -rf %{buildroot}%{_sysconfdir}/%{name}/%{name}.conf
+rm -rf %{buildroot}%{_sysconfdir}/%{name}/users.conf
+install -m644 %{SOURCE3} %{buildroot}%{_sysconfdir}/%{name}/%{name}.conf
+install -m644 %{SOURCE13} %{buildroot}%{_sysconfdir}/%{name}/users.conf
 
 # autologin config file for drakboot
 install -Dpm644 %{SOURCE4} %{buildroot}%{_sysconfdir}/%{name}/%{name}.conf.d/50-%{_vendor}-autologin.conf
@@ -299,7 +303,6 @@ rm -rf %{buildroot}%{_sysconfdir}/{init,apparmor.d}/
 %files -f %{name}.lang
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/%{name}.conf.d/
-%{_sysconfdir}/%{name}/%{name}.conf.d/50-%{_vendor}.conf
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf.d/50-%{_vendor}-autologin.conf
 %{_sysconfdir}/%{name}/Xsession
 %config(noreplace) %{_sysconfdir}/%{name}/keys.conf
@@ -321,4 +324,3 @@ rm -rf %{buildroot}%{_sysconfdir}/{init,apparmor.d}/
 %{_mandir}/man1/dm-tool.*
 %{_tmpfilesdir}/lightdm.conf
 %{_unitdir}/lightdm.service
-
