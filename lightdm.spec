@@ -8,7 +8,7 @@
 Summary:	The Light Display Manager
 Name:		lightdm
 Version:	1.11.8
-Release:	10
+Release:	11
 License:	GPLv3+
 Group:		Graphical desktop/Other
 Url:		http://www.freedesktop.org/wiki/Software/LightDM
@@ -291,14 +291,6 @@ rm -rf %{buildroot}%{_sysconfdir}/{init,apparmor.d}/
 
 %post
 %create_ghostfile %{_logdir}/%{name}/%{name}.log root root 0600
-%tmpfiles_create slim.conf
-%systemd_post lightdm.service
-
-%preun
-%systemd_preun lightdm.service
-
-%postun
-%systemd_postun lightdm.service
 
 %files -f %{name}.lang
 %dir %{_sysconfdir}/%{name}
