@@ -128,8 +128,6 @@ is useful for building LightDM greeters and user switchers.
 %{_libdir}/liblightdm-gobject-%{api}.so
 %{_libdir}/pkgconfig/liblightdm-gobject-%{api}.pc
 %{_datadir}/gir-1.0/LightDM-%{api}.gir
-%{_datadir}/vala/vapi/liblightdm-gobject-%{api}.vapi
-%{_datadir}/vala/vapi/liblightdm-gobject-1.deps
 #-------------------------------------------------------------------------
 
 %if %{build_qt5}
@@ -236,7 +234,8 @@ export PATH=%{qt4bin}:$PATH
 	--enable-liblightdm-qt \
 	--disable-liblightdm-qt5 \
 %endif
-	--with-greeter-session=lightdm-greeter
+	--with-greeter-session=lightdm-greeter \
+	--disable-vala
 %make
 
 %install
