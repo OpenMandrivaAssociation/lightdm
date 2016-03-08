@@ -7,8 +7,8 @@
 
 Summary:	The Light Display Manager
 Name:		lightdm
-Version:	1.11.8
-Release:	14
+Version:	1.17.5
+Release:	1
 License:	GPLv3+
 Group:		Graphical desktop/Other
 Url:		http://www.freedesktop.org/wiki/Software/LightDM
@@ -129,7 +129,7 @@ is useful for building LightDM greeters and user switchers.
 %{_libdir}/pkgconfig/liblightdm-gobject-%{api}.pc
 %{_datadir}/gir-1.0/LightDM-%{api}.gir
 %{_datadir}/vala/vapi/liblightdm-gobject-%{api}.vapi
-
+%{_datadir}/vala/vapi/liblightdm-gobject-1.deps
 #-------------------------------------------------------------------------
 
 %if %{build_qt5}
@@ -316,3 +316,5 @@ rm -rf %{buildroot}%{_sysconfdir}/{init,apparmor.d}/
 %{_mandir}/man1/dm-tool.*
 %{_tmpfilesdir}/lightdm.conf
 %{_unitdir}/lightdm.service
+%{_datadir}/bash-completion/completions/dm-tool
+%{_datadir}/bash-completion/completions/lightdm
