@@ -7,8 +7,8 @@
 
 Summary:	The Light Display Manager
 Name:		lightdm
-Version:	1.17.5
-Release:	2
+Version:	1.22.0
+Release:	1
 License:	GPLv3+
 Group:		Graphical desktop/Other
 Url:		http://www.freedesktop.org/wiki/Software/LightDM
@@ -29,7 +29,7 @@ Source20:	lightdm.pam
 Source21:	lightdm-autologin.pam
 Source22:	lightdm-greeter.pam
 # mga patches:
-Patch3:		lightdm-1.8.3-remove-bin-from-path.patch
+#Patch3:		lightdm-1.8.3-remove-bin-from-path.patch
 # originally from Fedora:
 Patch10:	lightdm-1.11.7-nodaemon_option.patch
 BuildRequires:	intltool
