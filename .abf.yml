@@ -1,2 +1,4 @@
-sources:
+removed_sources:
   lightdm-1.22.0.tar.xz: 3dbfbb7414b5c09ab7e6f1c25741366917587292
+sources:
+  lightdm-1.28.0.tar.xz: 9fad5aa713f641fac558c2fb3c53c80f9f6712c6

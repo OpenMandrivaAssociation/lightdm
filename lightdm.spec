@@ -7,12 +7,12 @@
 
 Summary:	The Light Display Manager
 Name:		lightdm
-Version:	1.22.0
-Release:	3
+Version:	1.28.0
+Release:	1
 License:	GPLv3+
 Group:		Graphical desktop/Other
 Url:		http://www.freedesktop.org/wiki/Software/LightDM
-Source0:	https://launchpad.net/lightdm/%{url_ver}/%{version}/+download/%{name}-%{version}.tar.xz
+Source0:	https://github.com/CanonicalLtd/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
 Source1:	29lightdm.conf
 Source2:	Xsession
 # specific settings overrides
@@ -73,6 +73,33 @@ An X display manager that:
   * Has a well defined interface between the server and user interface
   * Fully themeable (easiest with the webkit interface)
   * Cross-desktop (greeters can be written in any toolkit)
+
+%files -f %{name}.lang
+%dir %{_sysconfdir}/%{name}
+%dir %{_sysconfdir}/%{name}/%{name}.conf.d/
+%config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf.d/50-%{_vendor}-autologin.conf
+%{_sysconfdir}/%{name}/Xsession
+%config(noreplace) %{_sysconfdir}/%{name}/keys.conf
+%config(noreplace) %{_sysconfdir}/%{name}/lightdm.conf
+%config(noreplace) %{_sysconfdir}/%{name}/users.conf
+%config(noreplace) %{_sysconfdir}/pam.d/lightdm*
+%dir %{_logdir}/%{name}/
+%ghost %{_logdir}/%{name}/%{name}.log
+%attr(-,lightdm,lightdm) %dir %{_localstatedir}/lib/%{name}/
+%attr(-,lightdm,lightdm) %dir %{_localstatedir}/lib/%{name}-data/
+%{_sysconfdir}/dbus-1/system.d/org.freedesktop.DisplayManager.conf
+%{_datadir}/X11/dm.d/29lightdm.conf
+%{_datadir}/polkit-1/rules.d/lightdm.rules
+%{_datadir}/%{name}/
+%{_sbindir}/%{name}
+%{_bindir}/dm-tool
+%{_libexecdir}/lightdm-guest-session
+%{_mandir}/man1/%{name}*
+%{_mandir}/man1/dm-tool.*
+%{_tmpfilesdir}/lightdm.conf
+%{_unitdir}/lightdm.service
+%{_datadir}/bash-completion/completions/dm-tool
+%{_datadir}/bash-completion/completions/lightdm
 
 #-------------------------------------------------------------------------
 
@@ -209,7 +236,7 @@ is useful for building LightDM greeters and user switchers.
 
 %prep
 %setup -q
-%apply_patches
+%autopatch -p1
 
 # for autoreconf (to make it happy)
 sed -i '1iACLOCAL_AMFLAGS=-I m4' Makefile.am
@@ -236,10 +263,10 @@ export PATH=%{qt4bin}:$PATH
 %endif
 	--with-greeter-session=lightdm-greeter \
 	--disable-vala
-%make
+%make_build
 
 %install
-%makeinstall_std
+%make_install
 
 # dm config
 install -Dpm644 %{SOURCE1} %{buildroot}/%{_datadir}/X11/dm.d/29lightdm.conf
@@ -283,6 +310,7 @@ mkdir -p %{buildroot}%{_localstatedir}/lib/%{name}-data
 #we don't want these
 rm -rf %{buildroot}%{_sysconfdir}/{init,apparmor.d}/
 
+# locales
 %find_lang %{name} --with-gnome --all-name
 
 %pre
@@ -290,30 +318,3 @@ rm -rf %{buildroot}%{_sysconfdir}/{init,apparmor.d}/
 
 %post
 %create_ghostfile %{_logdir}/%{name}/%{name}.log root root 0600
-
-%files -f %{name}.lang
-%dir %{_sysconfdir}/%{name}
-%dir %{_sysconfdir}/%{name}/%{name}.conf.d/
-%config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf.d/50-%{_vendor}-autologin.conf
-%{_sysconfdir}/%{name}/Xsession
-%config(noreplace) %{_sysconfdir}/%{name}/keys.conf
-%config(noreplace) %{_sysconfdir}/%{name}/lightdm.conf
-%config(noreplace) %{_sysconfdir}/%{name}/users.conf
-%config(noreplace) %{_sysconfdir}/pam.d/lightdm*
-%dir %{_logdir}/%{name}/
-%ghost %{_logdir}/%{name}/%{name}.log
-%attr(-,lightdm,lightdm) %dir %{_localstatedir}/lib/%{name}/
-%attr(-,lightdm,lightdm) %dir %{_localstatedir}/lib/%{name}-data/
-%{_sysconfdir}/dbus-1/system.d/org.freedesktop.DisplayManager.conf
-%{_datadir}/X11/dm.d/29lightdm.conf
-%{_datadir}/polkit-1/rules.d/lightdm.rules
-%{_datadir}/%{name}/
-%{_sbindir}/%{name}
-%{_bindir}/dm-tool
-%{_libexecdir}/lightdm-guest-session
-%{_mandir}/man1/%{name}*
-%{_mandir}/man1/dm-tool.*
-%{_tmpfilesdir}/lightdm.conf
-%{_unitdir}/lightdm.service
-%{_datadir}/bash-completion/completions/dm-tool
-%{_datadir}/bash-completion/completions/lightdm
