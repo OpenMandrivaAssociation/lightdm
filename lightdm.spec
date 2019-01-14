@@ -1,9 +1,11 @@
 %define url_ver %(echo %{version}|cut -d. -f1,2)
 
-%define build_qt5 0
 %define api 1
 %define qtapi 3
 %define major 0
+
+%define liblightdmqt5devel %mklibname -d lightdm-qt5
+%define liblightdmqt5 %mklibname lightdm-qt5_ %{qtapi} %{major}
 
 Summary:	The Light Display Manager
 Name:		lightdm
@@ -44,26 +46,22 @@ BuildRequires:	pkgconfig(glib-2.0)
 BuildRequires:	pkgconfig(gobject-2.0)
 BuildRequires:	pkgconfig(gobject-introspection-1.0)
 BuildRequires:	pkgconfig(libxklavier)
-
-%if %{build_qt5}
 BuildRequires:	pkgconfig(Qt5Core)
 BuildRequires:	pkgconfig(Qt5DBus)
 BuildRequires:	pkgconfig(Qt5Gui)
-%else
-BuildRequires:	pkgconfig(QtCore) < 5.0.0
-BuildRequires:	pkgconfig(QtDBus) < 5.0.0
-BuildRequires:	pkgconfig(QtGui) < 5.0.0
-%endif
-
 BuildRequires:	pkgconfig(xdmcp)
 BuildRequires:	pkgconfig(xcb)
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	libgcrypt-devel
+
 Requires:	typelib(LightDM)
-Requires(post,postun,preun):	rpm-helper
 Requires:	lightdm-greeter
 Requires:	accountsservice
+
+Requires(post,postun,preun):	rpm-helper
+
 Suggests:	light-locker
+
 Provides:	dm
 
 %description
@@ -88,9 +86,12 @@ An X display manager that:
 %attr(-,lightdm,lightdm) %dir %{_localstatedir}/lib/%{name}/
 %attr(-,lightdm,lightdm) %dir %{_localstatedir}/lib/%{name}-data/
 %{_sysconfdir}/dbus-1/system.d/org.freedesktop.DisplayManager.conf
-%{_datadir}/X11/dm.d/29lightdm.conf
-%{_datadir}/polkit-1/rules.d/lightdm.rules
 %{_datadir}/%{name}/
+%{_datadir}/X11/dm.d/29lightdm.conf
+%{_datadir}/accountsservice/interfaces/org.freedesktop.DisplayManager.AccountsService.xml
+%{_datadir}/dbus-1/interfaces/org.freedesktop.DisplayManager.AccountsService.xml
+%{_datadir}/polkit-1/rules.d/lightdm.rules
+%{_datadir}/polkit-1/actions/org.freedesktop.DisplayManager.AccountsService.policy
 %{_sbindir}/%{name}
 %{_bindir}/dm-tool
 %{_libexecdir}/lightdm-guest-session
@@ -157,9 +158,6 @@ is useful for building LightDM greeters and user switchers.
 %{_datadir}/gir-1.0/LightDM-%{api}.gir
 #-------------------------------------------------------------------------
 
-%if %{build_qt5}
-%define liblightdmqt5 %mklibname lightdm-qt5_ %{qtapi} %{major}
-
 %package -n %{liblightdmqt5}
 Summary:	LightDM Qt5 client library
 Group:		Graphical desktop/Other
@@ -172,8 +170,6 @@ A Qt5 based library for LightDM clients to use to interface with LightDM.
 %{_libdir}/liblightdm-qt5-%{qtapi}.so.%{major}*
 
 #-------------------------------------------------------------------------
-
-%define liblightdmqt5devel %mklibname -d lightdm-qt5
 
 %package -n %{liblightdmqt5devel}
 Summary:	LightDM client library (development files)
@@ -193,45 +189,6 @@ is useful for building LightDM greeters and user switchers.
 %{_libdir}/liblightdm-qt5-%{qtapi}.so
 %{_libdir}/pkgconfig/liblightdm-qt5-%{qtapi}.pc
 
-%else
-#-------------------------------------------------------------------------
-
-%define liblightdmqt %mklibname lightdm-qt %{qtapi} %{major}
-
-%package -n %{liblightdmqt}
-Summary:	LightDM Qt client library
-Group:		Graphical desktop/Other
-License:	LGPLv2+
-
-%description -n %{liblightdmqt}
-A Qt based library for LightDM clients to use to interface with LightDM.
-
-%files -n %{liblightdmqt}
-%{_libdir}/liblightdm-qt-%{qtapi}.so.%{major}*
-
-#-------------------------------------------------------------------------
-
-%define liblightdmqtdevel %mklibname -d lightdm-qt
-
-%package -n %{liblightdmqtdevel}
-Summary:	LightDM client library (development files)
-Group:		Graphical desktop/Other
-License:	LGPLv2+
-Requires:	%{liblightdmqt} = %{version}-%{release}
-Provides:	lightdm-qt-devel = %{version}-%{release}
-
-%description -n %{liblightdmqtdevel}
-A Qt based library for LightDM clients to use to interface with LightDM.
-
-This package contains header files and development information, which
-is useful for building LightDM greeters and user switchers.
-
-%files -n %{liblightdmqtdevel}
-%{_includedir}/lightdm-qt-%{qtapi}
-%{_libdir}/liblightdm-qt-%{qtapi}.so
-%{_libdir}/pkgconfig/liblightdm-qt-%{qtapi}.pc
-
-%endif
 #-------------------------------------------------------------------------
 
 %prep
@@ -243,24 +200,14 @@ sed -i '1iACLOCAL_AMFLAGS=-I m4' Makefile.am
 autoreconf -vfi
 
 %build
-%if %{build_qt5}
 export PATH=%{_qt5_bindir}:$PATH
-%else
-export PATH=%{qt4bin}:$PATH
-%endif
-
 %configure \
 	--disable-static \
 	--disable-tests \
 	--enable-introspection \
 	--enable-liblightdm-gobject \
-%if %{build_qt5}
 	--enable-liblightdm-qt5 \
 	--disable-liblightdm-qt \
-%else
-	--enable-liblightdm-qt \
-	--disable-liblightdm-qt5 \
-%endif
 	--with-greeter-session=lightdm-greeter \
 	--disable-vala
 %make_build
