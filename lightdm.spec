@@ -10,7 +10,7 @@
 Summary:	The Light Display Manager
 Name:		lightdm
 Version:	1.30.0
-Release:	1
+Release:	2
 License:	GPLv3+
 Group:		Graphical desktop/Other
 Url:		http://www.freedesktop.org/wiki/Software/LightDM
@@ -52,7 +52,7 @@ BuildRequires:	pkgconfig(Qt5Gui)
 BuildRequires:	pkgconfig(xdmcp)
 BuildRequires:	pkgconfig(xcb)
 BuildRequires:	pkgconfig(x11)
-BuildRequires:	libgcrypt-devel
+BuildRequires:	pkgconfig(libgcrypt)
 
 Requires:	typelib(LightDM)
 Requires:	lightdm-greeter
@@ -210,6 +210,7 @@ export PATH=%{_qt5_bindir}:$PATH
 	--disable-liblightdm-qt \
 	--with-greeter-session=lightdm-greeter \
 	--disable-vala
+
 %make_build
 
 %install
