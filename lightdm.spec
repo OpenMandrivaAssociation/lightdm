@@ -10,7 +10,7 @@
 Summary:	The Light Display Manager
 Name:		lightdm
 Version:	1.30.0
-Release:	2
+Release:	3
 License:	GPLv3+
 Group:		Graphical desktop/Other
 Url:		http://www.freedesktop.org/wiki/Software/LightDM
