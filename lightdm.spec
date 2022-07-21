@@ -158,8 +158,8 @@ is useful for building LightDM greeters and user switchers.
 %{_libdir}/liblightdm-gobject-%{api}.so
 %{_libdir}/pkgconfig/liblightdm-gobject-%{api}.pc
 %{_datadir}/gir-1.0/LightDM-%{api}.gir
-%{_datadir}vala/vapi/liblightdm-gobject-1.deps
-%{_datadir}vala/vapi/liblightdm-gobject-1.vapi
+%{_datadir}/vala/vapi/liblightdm-gobject-1.deps
+%{_datadir}/vala/vapi/liblightdm-gobject-1.vapi
 #-------------------------------------------------------------------------
 
 %package -n %{liblightdmqt5}
