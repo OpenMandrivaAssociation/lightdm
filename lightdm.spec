@@ -266,7 +266,8 @@ rm -rf %{buildroot}%{_sysconfdir}/{init,apparmor.d}/
 %find_lang %{name} --with-gnome --all-name
 
 %pre
-%_pre_useradd %{name} %{_localstatedir}/lib/%{name} /bin/nologin
+#_pre_useradd %{name} %{_localstatedir}/lib/%{name} /bin/nologin
+%sysusers_create_package %{name}
 
 %post
 %create_ghostfile %{_logdir}/%{name}/%{name}.log root root 0600
