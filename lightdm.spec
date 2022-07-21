@@ -9,8 +9,8 @@
 
 Summary:	The Light Display Manager
 Name:		lightdm
-Version:	1.30.0
-Release:	3
+Version:	1.32.0
+Release:	1
 License:	GPLv3+
 Group:		Graphical desktop/Other
 Url:		http://www.freedesktop.org/wiki/Software/LightDM
@@ -40,6 +40,7 @@ BuildRequires:	gtk-doc
 BuildRequires:	pam-devel
 BuildRequires:	yelp-tools
 BuildRequires:	gettext-devel
+BuildRequires:	pkgconfig(audit)
 BuildRequires:	pkgconfig(gio-2.0)
 BuildRequires:	pkgconfig(gio-unix-2.0)
 BuildRequires:	pkgconfig(glib-2.0)
@@ -49,10 +50,11 @@ BuildRequires:	pkgconfig(libxklavier)
 BuildRequires:	pkgconfig(Qt5Core)
 BuildRequires:	pkgconfig(Qt5DBus)
 BuildRequires:	pkgconfig(Qt5Gui)
+BuildRequires:	pkgconfig(libgcrypt)
 BuildRequires:	pkgconfig(xdmcp)
 BuildRequires:	pkgconfig(xcb)
 BuildRequires:	pkgconfig(x11)
-BuildRequires:	pkgconfig(libgcrypt)
+BuildRequires:	pkgconfig(vapigen)
 
 Requires:	typelib(LightDM)
 Requires:	lightdm-greeter
@@ -85,7 +87,7 @@ An X display manager that:
 %ghost %{_logdir}/%{name}/%{name}.log
 %attr(-,lightdm,lightdm) %dir %{_localstatedir}/lib/%{name}/
 %attr(-,lightdm,lightdm) %dir %{_localstatedir}/lib/%{name}-data/
-%{_sysconfdir}/dbus-1/system.d/org.freedesktop.DisplayManager.conf
+%{_datadir}/dbus-1/system.d/org.freedesktop.DisplayManager.conf
 %{_datadir}/%{name}/
 %{_datadir}/X11/dm.d/29lightdm.conf
 %{_datadir}/accountsservice/interfaces/org.freedesktop.DisplayManager.AccountsService.xml
@@ -156,6 +158,8 @@ is useful for building LightDM greeters and user switchers.
 %{_libdir}/liblightdm-gobject-%{api}.so
 %{_libdir}/pkgconfig/liblightdm-gobject-%{api}.pc
 %{_datadir}/gir-1.0/LightDM-%{api}.gir
+%{_datadir}vala/vapi/liblightdm-gobject-1.deps
+%{_datadir}vala/vapi/liblightdm-gobject-1.vapi
 #-------------------------------------------------------------------------
 
 %package -n %{liblightdmqt5}
@@ -209,7 +213,7 @@ export PATH=%{_qt5_bindir}:$PATH
 	--enable-liblightdm-qt5 \
 	--disable-liblightdm-qt \
 	--with-greeter-session=lightdm-greeter \
-	--disable-vala
+	--enable-vala
 
 %make_build
 
