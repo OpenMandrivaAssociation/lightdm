@@ -40,7 +40,7 @@ BuildRequires:	gtk-doc
 BuildRequires:	pam-devel
 BuildRequires:	yelp-tools
 BuildRequires:	gettext-devel
-BuildRrquires:	pkgconfig(audit)
+BuildRequires:	pkgconfig(audit)
 BuildRequires:	pkgconfig(gio-2.0)
 BuildRequires:	pkgconfig(gio-unix-2.0)
 BuildRequires:	pkgconfig(glib-2.0)
