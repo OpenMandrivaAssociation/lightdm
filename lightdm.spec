@@ -87,7 +87,7 @@ An X display manager that:
 %ghost %{_logdir}/%{name}/%{name}.log
 %attr(-,lightdm,lightdm) %dir %{_localstatedir}/lib/%{name}/
 %attr(-,lightdm,lightdm) %dir %{_localstatedir}/lib/%{name}-data/
-#{_sysconfdir}/dbus-1/system.d/org.freedesktop.DisplayManager.conf
+%{_datadir}/dbus-1/system.d/org.freedesktop.DisplayManager.conf
 %{_datadir}/%{name}/
 %{_datadir}/X11/dm.d/29lightdm.conf
 %{_datadir}/accountsservice/interfaces/org.freedesktop.DisplayManager.AccountsService.xml
@@ -158,6 +158,8 @@ is useful for building LightDM greeters and user switchers.
 %{_libdir}/liblightdm-gobject-%{api}.so
 %{_libdir}/pkgconfig/liblightdm-gobject-%{api}.pc
 %{_datadir}/gir-1.0/LightDM-%{api}.gir
+%{_datadir}vala/vapi/liblightdm-gobject-1.deps
+%{_datadir}vala/vapi/liblightdm-gobject-1.vapi
 #-------------------------------------------------------------------------
 
 %package -n %{liblightdmqt5}
