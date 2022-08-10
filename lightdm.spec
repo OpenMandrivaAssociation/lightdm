@@ -10,7 +10,7 @@
 Summary:	The Light Display Manager
 Name:		lightdm
 Version:	1.32.0
-Release:	1
+Release:	2
 License:	GPLv3+
 Group:		Graphical desktop/Other
 Url:		http://www.freedesktop.org/wiki/Software/LightDM
@@ -26,6 +26,7 @@ Source10:	lightdm-tmpfiles.conf
 Source11:	lightdm.service
 Source12:	lightdm.rules
 Source13:	lightdm-users.conf
+Source14:	lightdm.sysusers
 # PAM configs stolen from gdm
 Source20:	lightdm.pam
 Source21:	lightdm-autologin.pam
@@ -55,15 +56,12 @@ BuildRequires:	pkgconfig(xdmcp)
 BuildRequires:	pkgconfig(xcb)
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(vapigen)
-
 Requires:	typelib(LightDM)
 Requires:	lightdm-greeter
 Requires:	accountsservice
-
-Requires(post,postun,preun):	rpm-helper
-
+Requires(pre): systemd
+%systemd_requires
 Suggests:	light-locker
-
 Provides:	dm
 
 %description
@@ -83,6 +81,7 @@ An X display manager that:
 %config(noreplace) %{_sysconfdir}/%{name}/lightdm.conf
 %config(noreplace) %{_sysconfdir}/%{name}/users.conf
 %config(noreplace) %{_sysconfdir}/pam.d/lightdm*
+%{_sysusersdir}/%{name}.conf
 %dir %{_logdir}/%{name}/
 %ghost %{_logdir}/%{name}/%{name}.log
 %attr(-,lightdm,lightdm) %dir %{_localstatedir}/lib/%{name}/
@@ -97,8 +96,8 @@ An X display manager that:
 %{_sbindir}/%{name}
 %{_bindir}/dm-tool
 %{_libexecdir}/lightdm-guest-session
-%{_mandir}/man1/%{name}*
-%{_mandir}/man1/dm-tool.*
+%doc %{_mandir}/man1/%{name}*
+%doc %{_mandir}/man1/dm-tool.*
 %{_tmpfilesdir}/lightdm.conf
 %{_unitdir}/lightdm.service
 %{_datadir}/bash-completion/completions/dm-tool
@@ -238,6 +237,7 @@ rm -rf %{buildroot}%{_sysconfdir}/%{name}/%{name}.conf
 rm -rf %{buildroot}%{_sysconfdir}/%{name}/users.conf
 install -m644 %{SOURCE3} %{buildroot}%{_sysconfdir}/%{name}/%{name}.conf
 install -m644 %{SOURCE13} %{buildroot}%{_sysconfdir}/%{name}/users.conf
+install -Dpm 644 %{SOURCE14} %{buildroot}%{_sysusersdir}/%{name}.conf
 
 # autologin config file for drakboot
 install -Dpm644 %{SOURCE4} %{buildroot}%{_sysconfdir}/%{name}/%{name}.conf.d/50-%{_vendor}-autologin.conf
@@ -266,7 +266,13 @@ rm -rf %{buildroot}%{_sysconfdir}/{init,apparmor.d}/
 %find_lang %{name} --with-gnome --all-name
 
 %pre
-%_pre_useradd %{name} %{_localstatedir}/lib/%{name} /bin/nologin
+%sysusers_create_package %{name} %{SOURCE14}
 
 %post
-%create_ghostfile %{_logdir}/%{name}/%{name}.log root root 0600
+%systemd_post lightdm.service
+
+%preun
+%systemd_preun lightdm.service
+ 
+%postun
+%systemd_postun lightdm.service
