@@ -13,7 +13,7 @@ Version:	1.32.0
 Release:	2
 License:	GPLv3+
 Group:		Graphical desktop/Other
-Url:		http://www.freedesktop.org/wiki/Software/LightDM
+Url:		https://www.freedesktop.org/wiki/Software/LightDM
 Source0:	https://github.com/CanonicalLtd/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
 Source1:	29lightdm.conf
 Source2:	Xsession
