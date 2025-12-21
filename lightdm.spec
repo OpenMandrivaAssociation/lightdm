@@ -35,6 +35,11 @@ Source22:	lightdm-greeter.pam
 #Patch3:		lightdm-1.8.3-remove-bin-from-path.patch
 # originally from Fedora:
 Patch10:	lightdm-1.11.7-nodaemon_option.patch
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	intltool
 BuildRequires:	gnome-common
 BuildRequires:	gtk-doc
