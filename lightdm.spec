@@ -16,7 +16,7 @@ Summary:	The Light Display Manager
 Name:		lightdm
 Version:	1.33.1
 Release:	1
-License:	GPLv3+
+License:	GPL-3.0-or-later
 Group:		Graphical desktop/Other
 Url:		https://www.freedesktop.org/wiki/Software/LightDM
 Source0:        https://github.com/ubuntu/lightdm/archive/%{version}/%{name}-%{version}.tar.gz
@@ -94,7 +94,7 @@ An X display manager that:
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/%{name}.conf.d/
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf.d/50-%{_vendor}-autologin.conf
-%{_sysconfdir}/%{name}/Xsession
+%config(noreplace) %{_sysconfdir}/%{name}/Xsession
 %config(noreplace) %{_sysconfdir}/%{name}/keys.conf
 %config(noreplace) %{_sysconfdir}/%{name}/lightdm.conf
 %config(noreplace) %{_sysconfdir}/%{name}/users.conf
@@ -128,7 +128,7 @@ An X display manager that:
 %package -n %{liblightdmgobject}
 Summary:	LightDM GObject client library
 Group:		Graphical desktop/Other
-License:	LGPLv2+
+License:	LGPL-2.0-or-later
 
 %description -n %{liblightdmgobject}
 A GObject based library for LightDM clients to use to interface with LightDM.
@@ -143,7 +143,7 @@ A GObject based library for LightDM clients to use to interface with LightDM.
 %package -n %{liblightdmgir}
 Summary:	Typelib file for liblightdm-1
 Group:		Graphical desktop/Other
-License:	LGPLv2+
+License:	LGPL-2.0-or-later
 Requires:	%{liblightdmgobject} = %{version}-%{release}
 
 %description -n %{liblightdmgir}
@@ -158,8 +158,8 @@ A GObject based library for LightDM clients to use to interface with LightDM.
 
 %package -n %{liblightdmgobjectdevel}
 Summary:	LightDM client library (development files)
-Group:		Graphical desktop/Other
-License:	LGPLv2+
+Group:		Development/Other
+License:	LGPL-2.0-or-later
 Requires:	%{liblightdmgobject} = %{version}-%{release}
 Provides:	lightdm-gobject-devel = %{version}-%{release}
 
@@ -182,7 +182,7 @@ is useful for building LightDM greeters and user switchers.
 %package -n %{liblightdmqt5}
 Summary:	LightDM Qt5 client library
 Group:		Graphical desktop/Other
-License:	LGPLv2+
+License:	LGPL-2.0-or-later
 
 %description -n %{liblightdmqt5}
 A Qt5 based library for LightDM clients to use to interface with LightDM.
@@ -194,8 +194,8 @@ A Qt5 based library for LightDM clients to use to interface with LightDM.
 
 %package -n %{liblightdmqt5devel}
 Summary:	LightDM client library (development files)
-Group:		Graphical desktop/Other
-License:	LGPLv2+
+Group:		Development/Other
+License:	LGPL-2.0-or-later
 Requires:	%{liblightdmqt5} = %{version}-%{release}
 Provides:	lightdm-qt5-devel = %{version}-%{release}
 
@@ -216,7 +216,7 @@ is useful for building LightDM greeters and user switchers.
 %package -n %{liblightdmqt6}
 Summary:        LightDM Qt6 client library
 Group:          Graphical desktop/Other
-License:        LGPLv2+
+License:        LGPL-2.0-or-later
 
 %description -n %{liblightdmqt6}
 A Qt5 based library for LightDM clients to use to interface with LightDM.
@@ -229,8 +229,8 @@ A Qt5 based library for LightDM clients to use to interface with LightDM.
 
 %package -n %{liblightdmqt6devel}
 Summary:        LightDM client library (development files)
-Group:          Graphical desktop/Other
-License:        LGPLv2+
+Group:          Development/Other
+License:        LGPL-2.0-or-later
 Requires:       %{liblightdmqt6} = %{version}-%{release}
 Provides:       lightdm-qt6-devel = %{version}-%{release}
 
@@ -334,6 +334,6 @@ rm -rf %{buildroot}%{_sysconfdir}/{init,apparmor.d}/
 
 %preun
 %systemd_preun lightdm.service
- 
+
 %postun
 %systemd_postun lightdm.service
