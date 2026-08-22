@@ -7,14 +7,21 @@
 %define liblightdmqt5devel %mklibname -d lightdm-qt5
 %define liblightdmqt5 %mklibname lightdm-qt5_ %{qtapi} %{major}
 
+
+%define liblightdmqt6devel %mklibname -d lightdm-qt6
+%define liblightdmqt6 %mklibname lightdm-qt6_ %{qtapi} %{major}
+
+
 Summary:	The Light Display Manager
 Name:		lightdm
-Version:	1.32.0
+Version:	1.33.1
 Release:	3
 License:	GPLv3+
 Group:		Graphical desktop/Other
 Url:		https://www.freedesktop.org/wiki/Software/LightDM
-Source0:	https://github.com/CanonicalLtd/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
+Source0:        https://github.com/ubuntu/lightdm/archive/%{version}/%{name}-%{version}.tar.gz
+# Old Link
+# https://github.com/CanonicalLtd/%{name}/releases/download/%{version}/%{name}-%{version}.tar.xz
 Source1:	29lightdm.conf
 Source2:	Xsession
 # specific settings overrides
@@ -35,32 +42,38 @@ Source22:	lightdm-greeter.pam
 #Patch3:		lightdm-1.8.3-remove-bin-from-path.patch
 # originally from Fedora:
 Patch10:	lightdm-1.11.7-nodaemon_option.patch
-BuildRequires:	autoconf
-BuildRequires:	automake
-BuildRequires:	libtool-base
-BuildRequires:	slibtool
-BuildRequires:	make
-BuildRequires:	intltool
-BuildRequires:	gnome-common
-BuildRequires:	gtk-doc
-BuildRequires:	pam-devel
-BuildRequires:	yelp-tools
-BuildRequires:	gettext-devel
-BuildRequires:	pkgconfig(audit)
-BuildRequires:	pkgconfig(gio-2.0)
-BuildRequires:	pkgconfig(gio-unix-2.0)
-BuildRequires:	pkgconfig(glib-2.0)
-BuildRequires:	pkgconfig(gobject-2.0)
-BuildRequires:	pkgconfig(gobject-introspection-1.0)
-BuildRequires:	pkgconfig(libxklavier)
-BuildRequires:	pkgconfig(Qt5Core)
-BuildRequires:	pkgconfig(Qt5DBus)
-BuildRequires:	pkgconfig(Qt5Gui)
-BuildRequires:	pkgconfig(libgcrypt)
-BuildRequires:	pkgconfig(xdmcp)
-BuildRequires:	pkgconfig(xcb)
-BuildRequires:	pkgconfig(x11)
-BuildRequires:	pkgconfig(vapigen)
+BuildRequires:  autoconf
+BuildRequires:  automake
+BuildRequires:  libtool-base
+BuildRequires:  slibtool
+BuildRequires:  make
+BuildRequires:  intltool
+BuildRequires:  gnome-common
+BuildRequires:  gtk-doc
+BuildRequires:  pam-devel
+BuildRequires:  yelp-tools
+BuildRequires:  gettext-devel
+BuildRequires:  pkgconfig(audit)
+BuildRequires:  pkgconfig(gio-2.0)
+BuildRequires:  pkgconfig(gio-unix-2.0)
+BuildRequires:  pkgconfig(glib-2.0)
+BuildRequires:  pkgconfig(gobject-2.0)
+BuildRequires:  pkgconfig(gobject-introspection-1.0)
+BuildRequires:  pkgconfig(libxklavier)
+BuildRequires:  pkgconfig(Qt5Core)
+BuildRequires:  pkgconfig(Qt5DBus)
+BuildRequires:  pkgconfig(Qt5Gui)
+BuildRequires:  pkgconfig(Qt6Core)
+BuildRequires:  pkgconfig(Qt6DBus)
+BuildRequires:  pkgconfig(Qt6Gui)
+BuildRequires:  pkgconfig(libgcrypt)
+BuildRequires:  pkgconfig(xdmcp)
+BuildRequires:  pkgconfig(xcb)
+BuildRequires:  pkgconfig(x11)
+BuildRequires:  pkgconfig(vapigen)
+
+BuildRequires:  pkgconfig(liblightdm-gobject-1)
+
 Requires:	typelib(LightDM)
 Requires:	lightdm-greeter
 Requires:	accountsservice
@@ -199,25 +212,68 @@ is useful for building LightDM greeters and user switchers.
 
 #-------------------------------------------------------------------------
 
+
+%package -n %{liblightdmqt6}
+Summary:        LightDM Qt6 client library
+Group:          Graphical desktop/Other
+License:        LGPLv2+
+
+%description -n %{liblightdmqt6}
+A Qt5 based library for LightDM clients to use to interface with LightDM.
+
+%files -n %{liblightdmqt6}
+%{_libdir}/liblightdm-qt6-%{qtapi}.so.%{major}*
+
+
+#-------------------------------------------------------------------------
+
+%package -n %{liblightdmqt6devel}
+Summary:        LightDM client library (development files)
+Group:          Graphical desktop/Other
+License:        LGPLv2+
+Requires:       %{liblightdmqt6} = %{version}-%{release}
+Provides:       lightdm-qt6-devel = %{version}-%{release}
+
+%description -n %{liblightdmqt6devel}
+A Qt6 based library for LightDM clients to use to interface with LightDM.
+
+This package contains header files and development information, which
+is useful for building LightDM greeters and user switchers.
+
+%files -n %{liblightdmqt6devel}
+%{_includedir}/lightdm-qt6-%{qtapi}
+%{_libdir}/liblightdm-qt6-%{qtapi}.so
+%{_libdir}/pkgconfig/liblightdm-qt6-%{qtapi}.pc
+
+#-------------------------------------------------------------------------
+
+
 %prep
 %setup -q
 %autopatch -p1
 
 # for autoreconf (to make it happy)
 sed -i '1iACLOCAL_AMFLAGS=-I m4' Makefile.am
+
+# Fix Qt bindings: GLib/GObject missing from link line (lld --no-undefined).
+sed -i 's/^\t-llightdm-gobject-1$/\t-llightdm-gobject-1 -lgobject-2.0 -lglib-2.0/' liblightdm-qt/Makefile.am
+
 autoreconf -vfi
 
 %build
 export PATH=%{_qt5_bindir}:$PATH
 %configure \
-	--disable-static \
-	--disable-tests \
-	--enable-introspection \
-	--enable-liblightdm-gobject \
-	--enable-liblightdm-qt5 \
-	--disable-liblightdm-qt \
-	--with-greeter-session=lightdm-greeter \
-	--enable-vala
+        --disable-static \
+        --disable-tests \
+        --enable-introspection \
+        --enable-liblightdm-gobject \
+        --enable-liblightdm-qt5 \
+        --disable-liblightdm-qt \
+        --with-greeter-session=lightdm-greeter \
+        --enable-vala \
+        --enable-liblightdm-qt6 \
+        --enable-introspection  \
+        --enable-gtk-doc \
 
 %make_build
 
